@@ -1,0 +1,56 @@
+on:
+  workflow_call:
+    inputs:
+      tool:
+        required: true
+        type: string
+        description: "Tool to publish"
+
+jobs:
+  call-build:
+    uses: ./.github/workflows/common-build.yml
+    with:
+      tool: ${{ inputs.tool }}
+  publish:
+    runs-on: ubuntu-latest
+    needs: [call-build]
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: $GITHUB_WORKSPACE/../../ngx-i18n-tools
+          merge-multiple: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "latest"
+          registry-url: "https://registry.npmjs.org"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: mv $RUNNER_TEMP/.npmrc $GITHUB_WORKSPACE
+      - run: |
+          cd ${{ inputs.tool }}
+          npm config list
+      - run: |
+          cd ${{ inputs.tool }}
+          echo "RELEASE_VERSION=$(npm version minor --git-tag-version false)" >> $GITHUB_OUTPUT
+        id: minor-version-bump
+      - run: |
+          cd ${{ inputs.tool }}
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: |
+          cd ${{ inputs.tool }}
+          npm version preminor --git-tag-version false
+      - uses: EndBug/add-and-commit@v9
+        with:
+          add: "${{ inputs.tool }}/package.json"
+          message: "Released and bumped version to pre-minor"
+          push: true
+          tag: "${{ inputs.tool }}-${{ steps.minor-version-bump.outputs.RELEASE_VERSION }}"
