@@ -1,0 +1,12 @@
+on: [workflow_dispatch]
+
+name: Publish ngx-xlf-xlsx
+
+jobs:
+  call-publish:
+    uses: ./.github/workflows/common-publish.yml
+    with:
+      tool: ngx-xlf-xlsx
+    permissions:
+      contents: write
+      packages: write

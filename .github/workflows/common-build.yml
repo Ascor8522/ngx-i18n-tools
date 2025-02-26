@@ -1,0 +1,37 @@
+on:
+  workflow_call:
+    inputs:
+      tool:
+        required: true
+        type: string
+        description: "Tool to build"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [{ os: "windows", arch: "amd64" }]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "stable"
+      - run: go env -w GOOS=${{ matrix.env.os }}
+      - run: go env -w GOARCH=${{ matrix.env.arch }}
+      - run: go -C ${{ inputs.tool }} build -a -ldflags "-s -w"
+      - run: mkdir -p ${{ inputs.tool }}/dist
+      - run: mv ${{ inputs.tool }}/${{ inputs.tool }}* ${{ inputs.tool }}/dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          path: "**/dist/*"
+          retention-days: 1
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "stable"
+      - run: go -C common test -v
+      - run: go -C ${{ inputs.tool }} test -v

@@ -1,0 +1,11 @@
+on: [push]
+
+name: Build ngx-xlf-xlsx
+
+jobs:
+  call-build:
+    uses: ./.github/workflows/common-build.yml
+    with:
+      tool: ngx-xlf-xlsx
+    permissions:
+      contents: write
