@@ -30,17 +30,24 @@ jobs:
           registry-url: "https://registry.npmjs.org"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: npm config list
-        working-directory: ${{ inputs.tool }}
-      - run: echo "RELEASE_VERSION=$(npm version minor --git-tag-version false)" >> $GITHUB_OUTPUT
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: mv $RUNNER_TEMP/.npmrc $GITHUB_WORKSPACE
+      - run: |
+          cd ${{ inputs.tool }}
+          npm config list
+      - run: |
+          cd ${{ inputs.tool }}
+          echo "RELEASE_VERSION=$(npm version minor --git-tag-version false)" >> $GITHUB_OUTPUT
         id: minor-version-bump
-        working-directory: ${{ inputs.tool }}
-      - run: npm publish --access public
+      - run: |
+          cd ${{ inputs.tool }}
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        working-directory: ${{ inputs.tool }}
-      - run: npm version preminor --git-tag-version false
-        working-directory: ${{ inputs.tool }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: |
+          cd ${{ inputs.tool }}
+          npm version preminor --git-tag-version false
       - uses: EndBug/add-and-commit@v9
         with:
           add: "${{ inputs.tool }}/package.json"
