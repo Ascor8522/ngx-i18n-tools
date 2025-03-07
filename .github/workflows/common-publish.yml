@@ -17,6 +17,7 @@ jobs:
     permissions:
       contents: write
       packages: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -30,6 +31,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm config list
+        working-directory: ${{ inputs.tool }}
       - run: echo "RELEASE_VERSION=$(npm version minor --git-tag-version false)" >> $GITHUB_OUTPUT
         id: minor-version-bump
         working-directory: ${{ inputs.tool }}
