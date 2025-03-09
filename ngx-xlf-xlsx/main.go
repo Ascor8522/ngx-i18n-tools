@@ -4,14 +4,14 @@ import (
 	"log"
 	"strconv"
 
-	. "github.com/Ascor8522/ngx-i18n-tools/common"
+	. "common"
 )
 
 func main() {
 	log.SetFlags(0)
 
 	log.Println("================================")
-	log.Printf("ngx-xlf-xlsx")
+	log.Println("ngx-xlf-xlsx")
 	log.Println("================================")
 	log.Println("")
 
@@ -24,7 +24,7 @@ func main() {
 	log.Println("================================")
 	log.Println("Done!")
 	log.Println("Excel file is at:")
-	log.Fatalln("./translations/data/messages.xlsx")
+	log.Printf("%s\n", XlsxPath)
 	log.Println("================================")
 }
 

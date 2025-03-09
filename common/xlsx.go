@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	basePath         = "translations.xlsx"
+	XlsxPath         = "./translations.xlsx"
 	defaultSheetName = "Sheet1"
 	keyColumnLabel   = "key"
 	columnWidth      = 50
@@ -23,7 +23,7 @@ type Xlsx struct {
 func (x *Xlsx) GetData() (KeyLocaleValueMap, error) {
 	keyLocaleValueMap := KeyLocaleValueMap{}
 
-	workbook, err := excelize.OpenFile(basePath)
+	workbook, err := excelize.OpenFile(XlsxPath)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (x *Xlsx) GetData() (KeyLocaleValueMap, error) {
 }
 
 func (x *Xlsx) EnsureExists(sourceLocale Locale, nonSourceLocales []Locale) error {
-	_, err := os.Stat(basePath)
+	_, err := os.Stat(XlsxPath)
 	if err == nil {
 		return nil
 	}
@@ -148,5 +148,5 @@ func (x *Xlsx) Write(translations KeyLocaleValueMap, sourceLocale Locale, nonSou
 		return err
 	}
 
-	return workbook.SaveAs(basePath)
+	return workbook.SaveAs(XlsxPath)
 }

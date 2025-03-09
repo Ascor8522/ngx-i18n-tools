@@ -83,11 +83,96 @@ This tool was meant to replace an internal tool made by Walter.
    ```
 
 2. Move the `translations/data/messages.xlsx` file to `translations.xlsx` in the root of the project.
+
+   ```bash
+   mv translations/data/messages.xlsx translations.xlsx
+   ```
+
 3. Remove the `translations` directory.
+
+   ```bash
+   rm -rf translations
+   ```
+
 4. Remove `build.xml` file in the root of the project.
-5. In `translations.xlsx`,
+
+   ```bash
+   rm build.xml
+   ```
+
+5. In your source files,
+   1. Use actual placeholders instead of using `.replace("$placeholder", value)` on a translation.
+
+      from:
+
+      ```ts
+      $localize`Hello $name`.replace("$name", name);
+      ```
+
+      to:
+
+      ```ts
+      $localize`Hello ${name}:name:`;
+      ```
+
+   2. Make sure your placeholders are named.
+   You can name a placeholder by using the `$localize``Hello ${name}:name:``.` syntax.
+   Notice the `:name:` part after the placeholder.
+
+      from:
+
+      ```ts
+      $localize`Hello ${name}`
+      ```
+
+      to:
+
+      ```ts
+      $localize`Hello ${name}:name:`
+      ```
+
+   3. Make sure you don't have any `${{placeholder}}` patterns in your source strings.
+   If you do, replace them with a different pattern.
+
+      from:
+
+      ```html
+      <p>Price: ${{ amount | number }}</p>
+      ```
+
+      to:
+
+      ```html
+      <p>Price: {{ amount | currency }}</p>
+      ```
+
+6. In `translations.xlsx`,
    1. Replace all `|` characters with line actual breaks.
    You can insert line breaks in Excel by pressing <kbd>Alt+Enter</kbd>.
+
+      from:
+
+      ```text
+      Bonjour ${{name}},|Bienvenue sur notre site web!
+      ```
+
+      to:
+
+      ```text
+      Bonjour ${{name}},
+      Bienvenue sur notre site web!
+      ```
+
    2. Adapt your placeholders to use the new `${{PLACEHOLDER_NAME}}` syntax.
-   Make sure your placeholders have a name, by using the `$localize``Hello ${name}:name:``.` syntax.
-   3. Use actual placeholders instead of using `.replace("$placeholder", value)` on a translation.
+
+      from:
+
+      ```text
+      Bonjour $name
+      ```
+
+      to:
+
+      ```text
+      Bonjour ${{name}}
+      ```

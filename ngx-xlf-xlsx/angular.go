@@ -6,13 +6,13 @@ import (
 	"maps"
 	"os"
 
-	. "github.com/Ascor8522/ngx-i18n-tools/common"
+	. "common"
 )
 
 const (
-	angularConfigPath      = "angular.json"
+	AngularConfigPath      = "./angular.json"
 	projectTypeApplication = "application"
-	sourceXlfPath          = "src/locale/messages.xlf"
+	SourceXlfPath          = "./src/locale/messages.xlf"
 )
 
 type ConfigFile struct {
@@ -38,7 +38,7 @@ func getMainAngularProject() (Project, error) {
 }
 
 func (a *ConfigFile) read() error {
-	fileContent, err := os.ReadFile(angularConfigPath)
+	fileContent, err := os.ReadFile(AngularConfigPath)
 	if err != nil {
 		return err
 	}
@@ -82,7 +82,7 @@ func (p *Project) getLocalesMap() LocalePathMap {
 	m := LocalePathMap{}
 
 	maps.Copy(m, p.I18n.Locales)
-	m[p.getSourceLocale()] = sourceXlfPath
+	m[p.getSourceLocale()] = SourceXlfPath
 
 	return m
 }

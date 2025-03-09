@@ -28,6 +28,7 @@
 	"files": [
 		"dist",
 		"README.md",
+		"MIGRATION.md",
 		"package.json"
 	],
 	"bin": {

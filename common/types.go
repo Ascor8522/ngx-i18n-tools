@@ -5,16 +5,16 @@ import (
 	"slices"
 )
 
-// A locale, with or without country; e.g. "en-US", "fr", "nl-BE", etc.
+// Locale A locale, with or without country; e.g. "en-US", "fr", "nl-BE", etc.
 type Locale string
 
-// A path to a file; used for xlf files; e.g. "src/locale/messages.de.xlf".
+// Path A path to a file; used for xlf files; e.g. "src/locale/messages.de.xlf".
 type Path string
 
-// A translation key.
+// Key A translation key.
 type Key string
 
-// A translation value.
+// Value A translation value.
 type Value string
 
 type LocalePathMap map[Locale]Path
@@ -35,7 +35,7 @@ func (l LocaleValueMap) GetLocales() []Locale {
 	return slices.Collect(maps.Keys(l))
 }
 
-// Groups the translations by locale instead of by key.
+// GroupByLocale Groups the translations by locale instead of by key.
 // Excel provides translations in a key-locale format, but we need them in a locale-key format for the xlf files.
 func (k KeyLocaleValueMap) GroupByLocale() LocaleKeyValueMap {
 	localeKeyValueMap := LocaleKeyValueMap{}

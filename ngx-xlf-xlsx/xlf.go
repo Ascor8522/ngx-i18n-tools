@@ -9,7 +9,7 @@ import (
 	"slices"
 	"strconv"
 
-	. "github.com/Ascor8522/ngx-i18n-tools/common"
+	. "common"
 	"github.com/fatih/color"
 )
 
@@ -47,12 +47,12 @@ type TransUnit struct {
 	Target       SourceTarget   `xml:"target,omitempty"`
 }
 
-// Must use a dedicated struct as we cannot use tag `xml:",innerxml"` together with `xml:"source"` or `xml:"target"`.
+// SourceTarget Must use a dedicated struct as we cannot use tag `xml:",innerxml"` together with `xml:"source"` or `xml:"target"`.
 type SourceTarget struct {
 	InnerXML string `xml:",innerxml"`
 }
 
-// A placeholder inside a source or target element.
+// X A placeholder inside a source or target element.
 type X struct {
 	XMLName   xml.Name `xml:"x"`
 	ID        string   `xml:"id,attr"`
@@ -149,7 +149,7 @@ func (tu *TransUnit) fixRead() error {
 		return fmt.Sprintf(placeholderSprintf, placeholderId)
 	})
 
-	// Since the source string was raw XML, we need to unescape it ourself.
+	// Since the source string was raw XML, we need to unescape it ourselves.
 	sourceStr, err := unescape(sourceStr)
 	if err != nil {
 		return err
@@ -198,7 +198,7 @@ func (tu *TransUnit) setTarget(value Value) error {
 		}
 	}
 
-	targetStr := implacePlaceholders(tu, value)
+	targetStr := emplacePlaceholders(tu, value)
 	tu.Target.InnerXML = targetStr
 
 	return nil
@@ -206,7 +206,7 @@ func (tu *TransUnit) setTarget(value Value) error {
 
 // Replace, in a string, the string representation of placeholders by a corresponding XML tags.
 // Original placeholders are re-used if found, otherwise a new one are created.
-func implacePlaceholders(tu *TransUnit, value Value) string {
+func emplacePlaceholders(tu *TransUnit, value Value) string {
 	regex := regexp.MustCompile(placeholderInTextRegex)
 	valueStr := regex.ReplaceAllStringFunc(string(value), func(placeholder string) string {
 		result := regex.FindStringSubmatch(placeholder)
