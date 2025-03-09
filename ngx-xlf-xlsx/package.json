@@ -1,6 +1,6 @@
 {
 	"name": "ngx-xlf-xlsx",
-	"version": "0.1.0",
+	"version": "0.2.0-0",
 	"description": "A simple CLI to convert back and forth between XLIFF and XLSX files in Angular projects.",
 	"author": "Ascor8522 (https://github.com/Ascor8522)",
 	"homepage": "https://github.com/Ascor8522/ngx-i18n-tools/tree/master/ngx-xlf-xlsx",

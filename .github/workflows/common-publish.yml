@@ -57,6 +57,5 @@ jobs:
       - uses: EndBug/add-and-commit@v9
         with:
           add: "${{ inputs.tool }}/package.json"
-          message: "Bumped version to pre-minor"
+          message: "Bumped ${{ inputs.tool }} version to pre-minor"
           push: true
-          tag: "${{ inputs.tool }}-${{ steps.minor-version-bump.outputs.RELEASE_VERSION }}"
