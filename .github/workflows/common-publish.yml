@@ -39,6 +39,12 @@ jobs:
           cd ${{ inputs.tool }}
           echo "RELEASE_VERSION=$(npm version minor --git-tag-version false)" >> $GITHUB_OUTPUT
         id: minor-version-bump
+      - uses: EndBug/add-and-commit@v9
+        with:
+          add: "${{ inputs.tool }}/package.json"
+          message: "Released ${{ inputs.tool }} version ${{ steps.minor-version-bump.outputs.RELEASE_VERSION }}"
+          push: false
+          tag: "${{ inputs.tool }}-${{ steps.minor-version-bump.outputs.RELEASE_VERSION }}"
       - run: |
           cd ${{ inputs.tool }}
           npm publish --access public
@@ -51,6 +57,6 @@ jobs:
       - uses: EndBug/add-and-commit@v9
         with:
           add: "${{ inputs.tool }}/package.json"
-          message: "Released and bumped version to pre-minor"
+          message: "Bumped version to pre-minor"
           push: true
           tag: "${{ inputs.tool }}-${{ steps.minor-version-bump.outputs.RELEASE_VERSION }}"
