@@ -6,6 +6,9 @@ on:
         type: string
         description: "Tool to build"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
