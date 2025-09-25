@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"slices"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -100,6 +101,10 @@ func (tm *TranslationManager) GetNonSourceLocales() []Locale {
 		}
 		locales = append(locales, locale)
 	}
+
+	sort.Slice(locales, func(i, j int) bool {
+		return locales[i] < locales[j]
+	})
 
 	return locales
 }
