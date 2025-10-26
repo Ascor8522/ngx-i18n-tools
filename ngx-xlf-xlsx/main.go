@@ -7,11 +7,13 @@ import (
 	. "common"
 )
 
+var version string
+
 func main() {
 	log.SetFlags(0)
 
 	log.Println("================================")
-	log.Println("ngx-xlf-xlsx")
+	log.Println("ngx-xlf-xlsx - " + version)
 	log.Println("================================")
 	log.Println("")
 

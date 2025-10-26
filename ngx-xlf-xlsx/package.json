@@ -1,53 +1,43 @@
 {
-	"name": "ngx-xlf-xlsx",
-	"version": "0.3.0-0",
-	"description": "A simple CLI to convert back and forth between XLIFF and XLSX files in Angular projects.",
-	"author": "Ascor8522 (https://github.com/Ascor8522)",
-	"homepage": "https://github.com/Ascor8522/ngx-i18n-tools/tree/master/ngx-xlf-xlsx",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Ascor8522/ngx-i18n-tools.git",
-		"directory": "ngx-xlf-xlsx"
-	},
-	"keywords": [
-		"ngx-xlf-xlsx",
-		"ngx",
-		"angular",
-		"xlf",
-		"xliff",
-		"xlsx",
-		"excel",
-		"i18n",
-		"translation",
-		"localization",
-		"internationalization",
-		"cli",
-		"@angular/localize"
-	],
-	"license": "MIT",
-	"files": [
-		"dist",
-		"README.md",
-		"MIGRATION.md",
-		"package.json"
-	],
-	"bin": {
-		"ngx-xlf-xlsx": "dist/ngx-xlf-xlsx.exe"
-	},
-	"os": [
-		"win32"
-	],
-	"cpu": [
-		"x64",
-		"ia32"
-	],
-	"scripts": {
-		"build": "go build -o \"dist/ngx-xlf-xlsx.exe\" -ldflags \"-s -w\"",
-		"test": "go test -v"
-	},
-	"publishConfig": {
-		"access": "public",
-		"provenance": true,
-		"registry": "https://registry.npmjs.org/"
-	}
+  "name": "ngx-xlf-xlsx",
+  "version": "0.3.0-0",
+  "description": "A simple CLI to convert back and forth between XLIFF and XLSX files in Angular projects.",
+  "author": "Ascor8522 (https://github.com/Ascor8522)",
+  "homepage": "https://github.com/Ascor8522/ngx-i18n-tools/tree/master/ngx-xlf-xlsx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ascor8522/ngx-i18n-tools.git",
+    "directory": "ngx-xlf-xlsx"
+  },
+  "keywords": [
+    "ngx-xlf-xlsx",
+    "ngx",
+    "angular",
+    "xlf",
+    "xliff",
+    "xlsx",
+    "excel",
+    "i18n",
+    "translation",
+    "localization",
+    "internationalization",
+    "cli",
+    "@angular/localize"
+  ],
+  "license": "MIT",
+  "files": [
+    "index.mjs",
+    "MIGRATION.md",
+    "ngx-xlf-xlsx.wasm",
+    "package.json",
+    "README.md"
+  ],
+  "bin": {
+    "ngx-xlf-xlsx": "index.mjs"
+  },
+  "engines": {
+    "node": ">=17.5.0"
+  },
+  "type": "module",
+  "exports": "./index.mjs"
 }

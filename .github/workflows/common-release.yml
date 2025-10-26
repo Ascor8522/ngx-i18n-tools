@@ -1,0 +1,64 @@
+on:
+  workflow_call:
+    inputs:
+      tool:
+        required: true
+        type: string
+        description: "Tool to build and release"
+      release-type:
+        required: true
+        type: string
+        description: "Type of release: major, minor, or patch"
+      next-release-type:
+        required: true
+        type: string
+        description: "Type of next release: premajor, preminor, or prepatch"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "current"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm i -g npm@latest
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "stable"
+      - uses: acifani/setup-tinygo@v2
+        with:
+          tinygo-version: "0.39.0"
+          binaryen-version: "124"
+      - run: echo "PKG_VERSION=$(npm version ${{ inputs.release-type }} --no-git-tag-version)" >> "$GITHUB_ENV"
+        working-directory: ${{ inputs.tool }}
+        id: get_version
+      - run: >-
+          tinygo build
+          -target="wasip1"
+          -ldflags="-X main.version=$PKG_VERSION"
+          -no-debug
+          -scheduler="none"
+          -panic="trap"
+          -gc="leaking"
+          -o="${{ inputs.tool }}.wasm"
+          .
+        working-directory: ${{ inputs.tool }}
+      - run: sed -e "s/TO_REPLACE_TOOL/${{ inputs.tool }}/g" "common/index.mjs" > "${{ inputs.tool }}/index.mjs"
+      - run: npm config list -l
+        working-directory: ${{ inputs.tool }}
+      - run: npm publish --verbose
+        working-directory: ${{ inputs.tool }}
+      - run: git tag -a "${{ inputs.tool }}-$PKG_VERSION"
+      - run: git commit -m "Released ${{ inputs.tool }} version %s"
+      - run: npm version ${{ inputs.next-release-type }} --no-git-tag-version
+        working-directory: ${{ inputs.tool }}
+      - run: git add "package.json"
+        working-directory: ${{ inputs.tool }}
+      - run: git commit -m "Bumped ${{ inputs.tool }} to next pre-minor version"
+      - run: git push origin HEAD --tags

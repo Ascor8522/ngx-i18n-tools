@@ -1,3 +1,8 @@
-.idea/
-**/dist/
-**/node_modules/
+.idea
+
+**/*.wasm
+
+**/index.mjs
+!./common/index.mjs
+
+./common/.index.mjs

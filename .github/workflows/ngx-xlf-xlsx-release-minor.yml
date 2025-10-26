@@ -1,0 +1,18 @@
+on: workflow_dispatch
+
+name: Minor release of ngx-xlf-xlsx
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  call-build:
+    uses: ./.github/workflows/common-release.yml
+    with:
+      tool: ngx-xlf-xlsx
+      release-type: minor
+      next-release-type: preminor
+    permissions:
+      id-token: write
+      contents: read
